@@ -1,0 +1,197 @@
+networks:
+  ethereum:
+    driver: bridge
+
+services:
+  # VALIDATEUR 1: Alice (Geth)
+  alice:
+    image: ethereum/client-go:latest
+    container_name: benchy-alice
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+    volumes:
+      - ./genesis.json:/genesis.json
+      - ./accounts.json:/accounts.json
+      - alice-data:/data
+    networks:
+      - ethereum
+    entrypoint: ["sh", "-c"]
+    command: |
+      "geth init --datadir /data /genesis.json && 
+       geth \
+         --datadir /data \
+         --networkid 1337 \
+         --nodiscover \
+         --maxpeers 10 \
+         --http \
+         --http.addr 0.0.0.0 \
+         --http.port 8545 \
+         --http.api web3,eth,net,personal,miner,admin \
+         --http.corsdomain '*' \
+         --ws \
+         --ws.addr 0.0.0.0 \
+         --ws.port 8546 \
+         --ws.api web3,eth,net,personal,miner,admin \
+         --ws.origins '*' \
+         --allow-insecure-unlock \
+         --mine \
+         --miner.etherbase 0x0000000000000000000000000000000000000000 \
+         --verbosity 3 \
+         --syncmode full \
+         --gcmode archive"
+
+  # VALIDATEUR 2: Bob (Geth)
+  bob:
+    image: ethereum/client-go:latest
+    container_name: benchy-bob
+    ports:
+      - "8547:8545"
+      - "8548:8546"
+    volumes:
+      - ./genesis.json:/genesis.json
+      - ./accounts.json:/accounts.json
+      - bob-data:/data
+    networks:
+      - ethereum
+    entrypoint: ["sh", "-c"]
+    command: |
+      "geth init --datadir /data /genesis.json && 
+       geth \
+         --datadir /data \
+         --networkid 1337 \
+         --nodiscover \
+         --maxpeers 10 \
+         --http \
+         --http.addr 0.0.0.0 \
+         --http.port 8545 \
+         --http.api web3,eth,net,personal,miner,admin \
+         --http.corsdomain '*' \
+         --ws \
+         --ws.addr 0.0.0.0 \
+         --ws.port 8546 \
+         --ws.api web3,eth,net,personal,miner,admin \
+         --ws.origins '*' \
+         --allow-insecure-unlock \
+         --mine \
+         --miner.etherbase 0x0000000000000000000000000000000000000000 \
+         --verbosity 3 \
+         --syncmode full \
+         --gcmode archive"
+
+  # VALIDATEUR 3: Cassandra (Geth)
+  cassandra:
+    image: ethereum/client-go:latest
+    container_name: benchy-cassandra
+    ports:
+      - "8549:8545"
+      - "8550:8546"
+    volumes:
+      - ./genesis.json:/genesis.json
+      - ./accounts.json:/accounts.json
+      - cassandra-data:/data
+    networks:
+      - ethereum
+    entrypoint: ["sh", "-c"]
+    command: |
+      "geth init --datadir /data /genesis.json && 
+       geth \
+         --datadir /data \
+         --networkid 1337 \
+         --nodiscover \
+         --maxpeers 10 \
+         --http \
+         --http.addr 0.0.0.0 \
+         --http.port 8545 \
+         --http.api web3,eth,net,personal,miner,admin \
+         --http.corsdomain '*' \
+         --ws \
+         --ws.addr 0.0.0.0 \
+         --ws.port 8546 \
+         --ws.api web3,eth,net,personal,miner,admin \
+         --ws.origins '*' \
+         --allow-insecure-unlock \
+         --mine \
+         --miner.etherbase 0x0000000000000000000000000000000000000000 \
+         --verbosity 3 \
+         --syncmode full \
+         --gcmode archive"
+
+  # FULL NODE 1: Driss (Geth)
+  driss:
+    image: ethereum/client-go:latest
+    container_name: benchy-driss
+    ports:
+      - "8551:8545"
+      - "8552:8546"
+    volumes:
+      - ./genesis.json:/genesis.json
+      - ./accounts.json:/accounts.json
+      - driss-data:/data
+    networks:
+      - ethereum
+    entrypoint: ["sh", "-c"]
+    command: |
+      "geth init --datadir /data /genesis.json && 
+       geth \
+         --datadir /data \
+         --networkid 1337 \
+         --nodiscover \
+         --maxpeers 10 \
+         --http \
+         --http.addr 0.0.0.0 \
+         --http.port 8545 \
+         --http.api web3,eth,net,personal,miner,admin \
+         --http.corsdomain '*' \
+         --ws \
+         --ws.addr 0.0.0.0 \
+         --ws.port 8546 \
+         --ws.api web3,eth,net,personal,miner,admin \
+         --ws.origins '*' \
+         --allow-insecure-unlock \
+         --verbosity 3 \
+         --syncmode full \
+         --gcmode archive"
+
+  # FULL NODE 2: Elena (Geth)
+  elena:
+    image: ethereum/client-go:latest
+    container_name: benchy-elena
+    ports:
+      - "8553:8545"
+      - "8554:8546"
+    volumes:
+      - ./genesis.json:/genesis.json
+      - ./accounts.json:/accounts.json
+      - elena-data:/data
+    networks:
+      - ethereum
+    entrypoint: ["sh", "-c"]
+    command: |
+      "geth init --datadir /data /genesis.json && 
+       geth \
+         --datadir /data \
+         --networkid 1337 \
+         --nodiscover \
+         --maxpeers 10 \
+         --http \
+         --http.addr 0.0.0.0 \
+         --http.port 8545 \
+         --http.api web3,eth,net,personal,miner,admin \
+         --http.corsdomain '*' \
+         --ws \
+         --ws.addr 0.0.0.0 \
+         --ws.port 8546 \
+         --ws.api web3,eth,net,personal,miner,admin \
+         --ws.origins '*' \
+         --allow-insecure-unlock \
+         --verbosity 3 \
+         --syncmode full \
+         --gcmode archive"
+
+volumes:
+  alice-data:
+  bob-data:
+  cassandra-data:
+  driss-data:
+  elena-data:
